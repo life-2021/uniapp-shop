@@ -1,5 +1,10 @@
 <template>
   <view class="home">
+    <!-- 搜索区域 -->
+    <view class="search-container">
+      <search @click="gotoSearch"></search>
+    </view>
+    <!-- end:搜索区域 -->
     <!-- 轮播 -->
     <view class="swiperBox">
       <swiper class="swiper" :circular="true" :indicator-dots="true" :autoplay="true" :interval="2000" :duration="500">
@@ -38,8 +43,10 @@
 
           <!-- 右边小图 -->
           <view class="right">
-            <navigator v-for="(item2, index2) in item.product_list" :key="index2" :url="item2.navigator_url" open-type="navigate">
-              <image  v-if="index2 !== 0" :src="item2.image_src" :style="'width:'+item2.image_width +'rpx;'"  mode="widthFix"></image>
+            <navigator v-for="(item2, index2) in item.product_list" :key="index2" :url="item2.navigator_url"
+              open-type="navigate">
+              <image v-if="index2 !== 0" :src="item2.image_src" :style="'width:' + item2.image_width + 'rpx;'"
+                mode="widthFix"></image>
             </navigator>
           </view>
           <!-- end：右边小图 -->
@@ -95,13 +102,19 @@ export default {
       let res = await uni.$http.get('/api/public/v1/home/floordata')
       if (res.statusCode === 200) {
         res.data.message.forEach(floor => {
-          floor.product_list.forEach(image => { 
+          floor.product_list.forEach(image => {
             image.navigator_url = '/subpkg/goods_list/goods_list?' + image.navigator_url.split('?')[1];
           })
         })
         this.floorList = res.data.message;
-        console.log(this.floorList);
+        // console.log(this.floorList);
       } else { uni.$showMsg }
+    },
+    //前往搜索页面
+    gotoSearch() {
+      uni.navigateTo({
+        url: `/subpkg/search/search`
+      })
     }
   },
 
@@ -117,6 +130,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.search-container{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
 .swiperBox {
   .swiper {
     width: 100%;
@@ -153,7 +171,7 @@ export default {
 }
 
 .floor-list {
- margin: 0 15rpx;
+  margin: 0 15rpx;
 
   .floor-item {
     margin: 30rpx 0;
@@ -174,7 +192,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        padding-left:10rpx;
+        padding-left: 10rpx;
       }
     }
   }

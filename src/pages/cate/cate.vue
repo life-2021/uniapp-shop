@@ -2,8 +2,10 @@
   <view class="cate">
     <!-- 搜索区域 -->
     <view class="search-container">
-
+      <search @click="gotoSearch"></search>
     </view>
+    <!-- end:搜索区域 -->
+
     <!-- 滑动区域 -->
     <view class="scroll-container">
       <!-- 左侧分类滑动区域 -->
@@ -12,7 +14,6 @@
           <view class="leftItem" :class="index == activeIndex ? 'active' : ''" @click="changeActiceIndex(index)">{{
             item.cat_name }}</view>
         </block>
-
       </scroll-view>
       <!-- end：左侧分类滑动区域 -->
 
@@ -21,7 +22,8 @@
         <view class="cate-lv2" v-for="(item, index) in cateListLevel2" :key="index">
           <view class="cate-lv2-title">{{ item.cat_name }}</view>
           <view class="cate-lv3-container">
-            <view class="cate-lv3-item" v-for="(item2, index2) in item.children" :key="index2" @click="gotoGoodsList(item2)">
+            <view class="cate-lv3-item" v-for="(item2, index2) in item.children" :key="index2"
+              @click="gotoGoodsList(item2)">
               <view class="item-img">
                 <image :src="item2.cat_icon" />
               </view>
@@ -61,7 +63,6 @@ export default {
                 lev3.cat_icon = 'https://api-ugo-web.itheima.net/full/' + lev3.cat_icon.split('https://api-ugo-dev.itheima.net/full/')[1]
               })
             }
-
           })
         })
         // 分类数据
@@ -69,7 +70,7 @@ export default {
         // console.log(this.cateList);
         // 二级分类数据
         this.cateListLevel2 = this.cateList[this.activeIndex].children;
-        console.log(this.cateListLevel2);
+        // console.log(this.cateListLevel2);
       } else { uni.$showMsg }
     },
     // 修改分类的选中的index
@@ -84,7 +85,13 @@ export default {
     //分类的点击事件
     gotoGoodsList(item) {
       uni.navigateTo({
-        url:`/subpkg/goods_list/goods_list?cid=${item.cat_id}`
+        url: `/subpkg/goods_list/goods_list?cid=${item.cat_id}`
+      })
+    },
+    //前往搜索页面
+    gotoSearch() {
+      uni.navigateTo({
+        url: `/subpkg/search/search`
       })
     }
   },
