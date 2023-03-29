@@ -58,7 +58,7 @@ export default {
       focusState: false,//搜索框焦点
       timer: null,//节流定时器
       searchResults: [],//搜索结果
-      historyList: ['记录1', '记录2', '记录3', 'a', '5', 's'],//搜索历史
+      historyList: [],//搜索历史
     }
   },
   computed: {
@@ -99,9 +99,20 @@ export default {
             // console.log(this.searchResults)
           }
 
-          // console.log(this.searchResults)
           // 添加到搜索历史记录
-          this.historyList.push(this.inputData)
+          // 检查是否有该记录
+          // 有：记录提前到第一位
+          if (this.historyList.includes(this.inputData)) {
+            let index = this.historyList.indexOf(this.inputData)
+            this.historyList.unshift(this.historyList[index])
+            this.historyList.splice(index + 1, 1)
+          } else {
+            // 没有直接添加
+            this.historyList.unshift(this.inputData)
+          }
+
+          // 将搜索历史保存到本地
+          uni.setStorageSync('historyList', this.historyList)
         } else uni.$showMsg()
 
       }
@@ -117,16 +128,22 @@ export default {
     // 删除搜索历史
     deleteHistory() {
       this.historyList = [];
+      // 将搜索历史保存到本地
+      uni.setStorageSync('historyList', this.historyList)
     },
+
     // 点击历史记录填入输入框内
     entryInput(item) {
       // console.log(item)
       this.inputData = item;
       uni.hideKeyboard();	//隐藏软键盘				
       this.focusState = true;
-      this.getSearchList();
     }
   },
+  onLoad() {
+    // 加载本地搜索历史
+    this.historyList = uni.getStorageSync('historyList') || [];
+  }
 } 
 </script>
 
