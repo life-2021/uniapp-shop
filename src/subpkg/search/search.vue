@@ -120,8 +120,9 @@ export default {
 
     // 前往商品详情页
     gotoDetail(item) {
+      console.log(item)
       uni.navigateTo({
-        url: `/subpkg/goods_detail/goods_detail?goods_id=${item.id}`
+        url: `/subpkg/goods_detail/goods_detail?goods_id=${item.goods_id}`
       })
     },
 

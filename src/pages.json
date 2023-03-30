@@ -42,7 +42,13 @@
 				},
 				{
 					"path": "goods_list/goods_list",
-					"style": {}
+					"style": {
+						// 设置上拉触底
+						"onReachBottomDistance": 150,
+						// 设置下拉事件
+						 "enablePullDownRefresh": true,
+						 "backgroundColor": "#F8F8F8"
+					}
 				},
 				{
 					"path": "search/search",
